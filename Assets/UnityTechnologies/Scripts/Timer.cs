@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour // Major Modification implemented
     public CanvasGroup caughtBackgroundImageCanvasGroup;
     public AudioSource caughtAudio;
 
-    private float m_Timer = 0f;  
+    private float m_Timer;  
     public float fadeDuration = 1f;  
     public float displayImageDuration = 1f;
     bool m_HasAudioPlayed;
