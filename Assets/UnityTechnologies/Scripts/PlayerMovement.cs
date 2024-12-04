@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     public float turnSpeed = 20f;
-    public float sprintSpeed; // Minor code added for speed boost. It is activated by pressing the shift  key. 
+    public float sprintSpeed; // Minor code added for speed boost. It is activated by pressing the sprint key - LF.
+    public float inactivityTimeout = 5f; // Time after which the character stops moving (5 seconds) - CB
+    public int spacebarPressRequired = 3; // Number of spacebar presses needed to resume movement - CB
+
+    private float timeSinceLastMove = 0f;
+    private int spacebarPressCount = 0;
+    private bool canMove = true;
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -22,6 +29,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove) return;
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
@@ -39,25 +48,55 @@ public class PlayerMovement : MonoBehaviour
             {
                 m_AudioSource.Play();
             }
+
+            timeSinceLastMove = 0f;
         }
         else
         {
             m_AudioSource.Stop();
+
+            timeSinceLastMove += Time.deltaTime;
+        }
+
+        
+        if (timeSinceLastMove >= inactivityTimeout)
+        {
+            canMove = false;
+            m_Animator.SetBool("IsWalking", false);
         }
 
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
 
-        if (Input.GetKey(KeyCode.LeftShift)) // Minor code here
+        if (Input.GetKey(KeyCode.LeftShift)) //Sprinting code - LF
         {
-            m_Movement *= sprintSpeed;    
+            m_Movement *= sprintSpeed;
         }
-
     }
 
     void OnAnimatorMove()
     {
-        m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
-        m_Rigidbody.MoveRotation(m_Rotation);
+        if (canMove)
+        {
+            m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
+            m_Rigidbody.MoveRotation(m_Rotation);
+        }
+    }
+
+    void Update()
+    {
+
+        if (!canMove && Input.GetKeyDown(KeyCode.Space))
+        {
+            spacebarPressCount++;
+
+
+            if (spacebarPressCount >= spacebarPressRequired)
+            {
+                canMove = true;
+                spacebarPressCount = 0;
+                timeSinceLastMove = 0f;
+            }
+        }
     }
 }
