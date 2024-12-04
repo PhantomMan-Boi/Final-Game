@@ -19,7 +19,6 @@ public class Timer : MonoBehaviour // Major Modification implemented
 
     void Start()
     {
-        
         timeRemaining = startTime;
     }
 
