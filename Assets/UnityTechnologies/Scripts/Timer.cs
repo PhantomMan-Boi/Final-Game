@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class Timer : MonoBehaviour // Major Modification implemented
 {
-    public float startTime;  
+    public float timeStart;  
     private float timeLeft;   
     public TextMeshProUGUI timerText;  
     public CanvasGroup caughtBackgroundImageCanvasGroup;
@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour // Major Modification implemented
 
     void Start()
     {
-        timeLeft = startTime;
+        timeLeft = timeStart;
     }
 
     void Update()
