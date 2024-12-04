@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float turnSpeed = 20f;
-    public float sprintSpeed; // Minor code added for speed boost. It is activated by pressing the sprint key - LF.
+    public float sprintSpeed; // Minor code added for speed boost. It is activated by pressing the shift  key. 
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 desiredForward = Vector3.RotateTowards(transform.forward, m_Movement, turnSpeed * Time.deltaTime, 0f);
         m_Rotation = Quaternion.LookRotation(desiredForward);
 
-        if (Input.GetKey(KeyCode.LeftShift)) // Minor code - LF
+        if (Input.GetKey(KeyCode.LeftShift)) // Minor code here
         {
             m_Movement *= sprintSpeed;    
         }
