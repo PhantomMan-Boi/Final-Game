@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour // Major Modification implemented
 {
     public float startTime;  
-    private float timeRemaining;   
+    private float timeLeft;   
     public TextMeshProUGUI timerText;  
     public CanvasGroup caughtBackgroundImageCanvasGroup;
     public AudioSource caughtAudio;
@@ -19,24 +19,24 @@ public class Timer : MonoBehaviour // Major Modification implemented
 
     void Start()
     {
-        timeRemaining = startTime;
+        timeLeft = startTime;
     }
 
     void Update()
     {
         
-        if (timeRemaining > 0)
+        if (timeLeft > 0)
         {
-            timeRemaining -= Time.deltaTime;  
+            timeLeft -= Time.deltaTime;  
         }
         else
         {
-            timeRemaining = 0;  
+            timeLeft = 0;  
             EndLevel(caughtBackgroundImageCanvasGroup, true, caughtAudio);  
         }
 
-        int minutes = Mathf.FloorToInt(timeRemaining / 60);
-        int seconds = Mathf.FloorToInt(timeRemaining % 60);
+        int minutes = Mathf.FloorToInt(timeLeft / 60);
+        int seconds = Mathf.FloorToInt(timeLeft % 60);
         timerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
