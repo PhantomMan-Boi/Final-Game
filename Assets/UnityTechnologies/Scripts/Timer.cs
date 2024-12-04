@@ -4,7 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 
-public class Timer : MonoBehaviour
+public class Timer : MonoBehaviour // Major Modification implemented by Luis Fajardo
 {
     public float startTime;  
     private float timeRemaining;   
